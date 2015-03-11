@@ -35,7 +35,7 @@ WPA_SUPPL_DIR_INCLUDE = $(WPA_SUPPL_DIR)/src \
 	$(WPA_SUPPL_DIR)/wpa_supplicant
 
 ifdef CONFIG_DRIVER_NL80211
-WPA_SUPPL_DIR_INCLUDE += external/libnl-headers
+WPA_SUPPL_DIR_INCLUDE += external/libnl/include
 WPA_SRC_FILE += driver_cmd_nl80211.c
 endif
 
@@ -43,8 +43,8 @@ ifdef CONFIG_DRIVER_WEXT
 WPA_SRC_FILE += driver_cmd_wext.c
 endif
 
-# To force sizeof(enum) = 4
 ifeq ($(TARGET_ARCH),arm)
+# To force sizeof(enum) = 4
 L_CFLAGS += -mabi=aapcs-linux
 endif
 
@@ -55,13 +55,7 @@ endif
 ########################
 
 include $(CLEAR_VARS)
-ifdef CONFIG_DRIVER_NL80211
-    LOCAL_MODULE := lib_driver_cmd_nl80211
-else
-    ifdef CONFIG_DRIVER_WEXT
-        LOCAL_MODULE := lib_driver_cmd_wext
-    endif
-endif
+LOCAL_MODULE := lib_driver_cmd_nl80211
 LOCAL_SHARED_LIBRARIES := libc libcutils
 LOCAL_CFLAGS := $(L_CFLAGS)
 LOCAL_SRC_FILES := $(WPA_SRC_FILE)
